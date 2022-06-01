@@ -1,0 +1,379 @@
+tool-name       : Z3
+tool-version    : Z3 version 4.8.14 - 64 bit
+tool-options    : -t:10000
+cpu-time-limit  : 1200 s
+wall-time-limit : 10 s
+os              : Linux
+cpu-model       : Intel(R) Core(TM) i7-8665U CPU @ 1.90GHz
+cpu-count       : 8
+architecture    : x86_64
+mem-total       : 16198516 kB
+start-date      : 2022-06-01 11:43:59
+script-dir      : /home/zafer/research/tools/benchmarking/run-list/test
+notes           : 
+
+filename : nonHeapBms220521/ps2-ll.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/pals_lcr-var-start-time.6.1.ufo.BOUNDED-12.pals.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/pals_lcr.5.1.ufo.BOUNDED-10.pals.c.p+lhb-reducer.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/test_locks_8.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/Haystacks-07.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/sendmail-close-angle.i.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/pals_lcr-var-start-time.4.2.ufo.UNBOUNDED.pals.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/pals_lcr.7.1.ufo.BOUNDED-14.pals.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/prodbin-ll_valuebound1.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/id_o10.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 0 s
+
+filename : nonHeapBms220521/prod4br-ll_valuebound5.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec3_product38.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/lcm2_unwindbound10.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/egcd2-ll_unwindbound1.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/pals_lcr.6.1.ufo.BOUNDED-12.pals.c.v+cfa-reducer.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/string_concat-noarr.i.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 7 s
+
+filename : nonHeapBms220521/geo2-ll_valuebound1.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/hard-ll_valuebound2.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/pals_lcr-var-start-time.4.ufo.UNBOUNDED.pals.c.v+cfa-reducer.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec4_product25.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/Mono5_1.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/lcm1_valuebound2.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/geo1-u_unwindbound2.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/pals_lcr-var-start-time.4.ufo.BOUNDED-8.pals.c.v+nlh-reducer.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 11 s
+
+filename : nonHeapBms220521/pals_lcr-var-start-time.5.2.ufo.UNBOUNDED.pals.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/egcd3-ll_valuebound2.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/divbin_valuebound10.i.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/transmitter.07.cil.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/benchmark14_linear.i.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/cohencu-ll_valuebound100.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/lcm2_valuebound2.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/minepump_spec3_product45.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/pals_lcr-var-start-time.6.ufo.UNBOUNDED.pals.c.v+cfa-reducer.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec3_product21.cil.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 1 s
+
+filename : nonHeapBms220521/s3_srvr_1.cil-1.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 1 s
+
+filename : nonHeapBms220521/minepump_spec1_product56.cil.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 0 s
+
+filename : nonHeapBms220521/egcd2-ll_valuebound5.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec1_product34.cil.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 0 s
+
+filename : nonHeapBms220521/pals_lcr-var-start-time.3.1.ufo.UNBOUNDED.pals.c.v+cfa-reducer.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/ps2-ll_valuebound10.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec2_product14.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 1 s
+
+filename : nonHeapBms220521/sumt6.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/cohencu-ll_unwindbound2.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec5_product40.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/minepump_spec5_product06.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/minepump_spec5_product11.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/minepump_spec4_product39.cil.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 1 s
+
+filename : nonHeapBms220521/minepump_spec2_product07.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/minepump_spec5_product16.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/bresenham-ll_valuebound1.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec5_product31.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 1 s
+
+filename : nonHeapBms220521/sqrt1-ll_valuebound1.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/sumt8.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/minepump_spec3_product05.cil.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 0 s
+
+filename : nonHeapBms220521/kbfiltr_simpl2.cil-1.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 1 s
+
+filename : nonHeapBms220521/token_ring.03.cil-2.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/ps6-ll_unwindbound5.c.smt2
+expected : (set-info :status unsat)
+output   : 
+wall timeout
+duration : 10 s
+
+filename : nonHeapBms220521/minepump_spec4_product13.cil.c.smt2
+expected : (set-info :status sat)
+output   : 
+sat
+duration : 0 s
+
+filename : nonHeapBms220521/id_b3_o2-2.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 0 s
+
+filename : nonHeapBms220521/sum_20x0-1.c.smt2
+expected : (set-info :status unsat)
+output   : 
+unsat
+duration : 6 s
+
+filename : nonHeapBms220521/token_ring.02.cil-1.c.smt2
+expected : (set-info :status sat)
+output   : 
+wall timeout
+duration : 10 s
