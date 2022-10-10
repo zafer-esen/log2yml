@@ -11,9 +11,10 @@ import log2yml.parser._
 object Main extends App {
   override def main(args: Array[String]): Unit = {
     val usage =
-"""Usage: log2yml inFileName [-out filename]
-  inFileName      : input file to process
+"""Usage: log2yml [-out filename] [-sv] inFileName
+  inFileName      : input file to process (must be at last place)
   [-out filename] : output filename (default: (inFileName).yml)
+  [-sv]           : parse output gathered from SV-COMP published results (default: false)
 """
 
     import java.io.File
@@ -27,12 +28,16 @@ object Main extends App {
     // default args
     var inFileName = ""
     var outFileName = ""
+    var svInput = false
 
     def parseOptions(list: List[String]): Unit = {
       list match {
         case Nil => // nothing
         case "-out" :: str :: tail =>
           outFileName = str
+          parseOptions(tail)
+        case "-sv" :: tail =>
+          svInput = true
           parseOptions(tail)
         case string :: Nil =>
           inFileName = string
@@ -57,7 +62,11 @@ object Main extends App {
 
     val lines = inFile.getLines()
 
-    val (summary, bmRuns) = parser.LogParser(lines.mkString("\n"))
+    val (summary, bmRuns) =
+      if (svInput)
+        parser.SVParser(inFileName, lines)
+      else
+        parser.LogParser(lines.mkString("\n"))
 
     println(bmRuns.length + " benchmark runs found for the tool " +
       summary.toolName + ".")
