@@ -54,8 +54,10 @@ object LogParser extends RegexParsers {
     "filename" | "expected" | "duration"
 
   // each line can be runFieldIdentifier : ...
-  def runFieldLine: Parser[(String, String)] =
-    runFieldIdentifier ~ ":" ~ (literalLine | literalSingleLine)^^ {s => (s._1._1, s._2)}
+  def runFieldLine: Parser[(String, Option[String])] =
+    runFieldIdentifier ~ ":" ~
+       opt(not((runFieldIdentifier | "output") ~ ":") ~> (literalLine | literalSingleLine))^^
+     {s => (s._1._1, s._2)}
 
   // we also have the tool output, starting with "output", and can have many lines
 
@@ -69,9 +71,12 @@ object LogParser extends RegexParsers {
 
   // each benchmark run currently has 4 lines (messy, clean up)
   val benchmarkRun: Parser[RunInfo] =
-    runFieldLine ~ runFieldLine ~ runOutputField ~ runFieldLine  ^^ {
-      case name ~ expected ~ output ~ duration =>
-        RunInfo(name._2, expected._2, output._2, duration._2)
+    runFieldLine ~ opt(runFieldLine) ~ runOutputField ~ runFieldLine  ^^ {
+      case name ~ maybeExpected ~ output ~ duration =>
+        RunInfo(name._2.getOrElse(""),
+                maybeExpected.getOrElse(("",Some("")))._2.getOrElse(""),
+                output._2,
+                duration._2.getOrElse(""))
     }
 
   val benchmarkRuns : Parser[Seq[RunInfo]] = benchmarkRun.+
