@@ -122,10 +122,16 @@ object Main extends App {
       val aggregatedResults = logFiles.flatMap{file =>
         val lines = Source.fromFile(file).getLines()
         val (summary, bmRuns) =
-          if (svInput)
-            parser.SVParser(file.getName, lines)
-          else
-            parser.LogParser(lines.mkString("\n"))
+          try {
+            if (svInput)
+              parser.SVParser(file.getName, lines)
+            else
+              parser.LogParser(lines.mkString("\n"))
+          } catch {
+            case e : Throwable =>
+              println("Error parsing file: " + file.getAbsolutePath)
+              throw e
+          }
         lastSummary = summary
         // todo: do some checks here regarding summary
         bmRuns
