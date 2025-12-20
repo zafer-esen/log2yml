@@ -20,7 +20,11 @@ object Benchmarks {
                      memTotal      : String, // todo: int in MB?
                      startDate     : String,
                      scriptDir     : String,
-                     notes         : String)
+                     notes         : String) {
+
+    def withNotesIf(newNotes: String, cond : Boolean): Summary =
+      if (cond) copy(notes = newNotes) else this
+  }
 
   case class RunInfo(bmName     : String,
                      expected   : String,

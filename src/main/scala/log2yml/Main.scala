@@ -16,6 +16,7 @@ object Main extends App {
         |  [-out filename] : output filename (default: based on inPath or directory name)
         |  [-sv]           : parse output gathered from SV-COMP published results (default: false)
         |  [-dir]          : indicates that inPath is a directory containing multiple .log1 files
+        |  [-notes str]    : overwrite notes field in the generated yml file using str
         |""".stripMargin
 
     if (args.isEmpty) {
@@ -27,40 +28,52 @@ object Main extends App {
     // default args
     var inPath = ""
     var outFileName = ""
+    var overwriteNotes = false
+    var overwriteNoteString = ""
     var svInput = false
     var isDirectory = false
 
-    def parseOptions(list: List[String]): Unit = {
-      list match {
-        case Nil => // nothing
-        case "-out" :: str :: tail =>
-          outFileName = str
-          parseOptions(tail)
-        case "-sv" :: tail =>
-          svInput = true
-          parseOptions(tail)
-        case "-dir" :: tail =>
-          isDirectory = true
-          parseOptions(tail)
-        case string :: Nil =>
-          inPath = string
-        case option :: _ =>
-          println("Unknown option: " + option + "\n")
-      }
+    def parseOptions(list: List[String]): List[String] = list match {
+      case Nil => Nil
+      case "-out" :: str :: tail =>
+        outFileName = str
+        parseOptions(tail)
+      case "-notes" :: str :: tail =>
+        overwriteNoteString = str
+        overwriteNotes = true
+        parseOptions(tail)
+      case "-sv" :: tail =>
+        svInput = true
+        parseOptions(tail)
+      case "-dir" :: tail =>
+        isDirectory = true
+        parseOptions(tail)
+      case option :: tail if option.startsWith("-") =>
+        println(s"Unknown option: $option")
+        parseOptions(tail)
+      case nonOption :: tail =>
+        nonOption :: tail
     }
 
-    parseOptions(arglist)
+    val remainingArgs = parseOptions(arglist)
+    remainingArgs match {
+      case List(inPathArg) =>
+        inPath = inPathArg
+      case _ =>
+        if (remainingArgs.isEmpty) {
+          println("Error: Missing input path.")
+        } else {
+          println(s"Error: Expected exactly one input path, but got ${remainingArgs.size} arguments: ${remainingArgs.mkString(", ")}")
+        }
+        println(usage)
+        return
+    }
+
     if (outFileName.isEmpty) {
       outFileName = if (isDirectory) "" else inPath + ".yml"
     }
 
-    if (inPath.isEmpty) {
-      println("An input path must be provided.\n")
-      println(usage)
-      return
-    }
-
-    // Set output filename based on directory name or input filename, if not explicitly specified
+    // Set output filename based on directory name or input filename if not specified
     if (outFileName.isEmpty) {
       val file = new File(inPath)
       if (isDirectory) {
@@ -139,7 +152,9 @@ object Main extends App {
       println(aggregatedResults.length + " benchmark runs found for the tool " +
               lastSummary.toolName + ".")
       // Process and output aggregated results for all files
-      outputYaml(aggregatedResults, lastSummary, outFileName)
+      outputYaml(aggregatedResults,
+                 lastSummary.withNotesIf(overwriteNoteString, overwriteNotes),
+                 outFileName)
     } else {
       val lines = Source.fromFile(inPath).getLines()
       val (summary, bmRuns) =
@@ -150,7 +165,9 @@ object Main extends App {
       // Process and output results for the single file
       println(bmRuns.length + " benchmark runs found for the tool " +
               summary.toolName + ".")
-      outputYaml(bmRuns, summary, outFileName) // You will implement this function
+      outputYaml(bmRuns,
+                 summary.withNotesIf(overwriteNoteString, overwriteNotes),
+                 outFileName) // You will implement this function
     }
 
     println("Done!")
