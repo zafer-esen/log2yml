@@ -20,7 +20,11 @@ object Benchmarks {
                      memTotal      : String, // todo: int in MB?
                      startDate     : String,
                      scriptDir     : String,
-                     notes         : String) {
+                     notes         : String,
+                     hostname         : Option[String] = None,
+                     slurmJobId       : Option[String] = None,
+                     slurmArrayTaskId : Option[String] = None,
+                     memLimit         : Option[String] = None) {
 
     def withNotesIf(newNotes: String, cond : Boolean): Summary =
       if (cond) copy(notes = newNotes) else this
@@ -29,11 +33,13 @@ object Benchmarks {
   case class RunInfo(bmName     : String,
                      expected   : String,
                      toolOutput : Seq[String],
-                     duration   : String)
+                     duration   : String,
+                     cpuTime    : Option[String] = None,
+                     maxRss     : Option[String] = None)
 
   object MyYamlProtocol extends DefaultYamlProtocol {
-    implicit val summaryFormat = yamlFormat13(Summary)
-    implicit val runInfoFormat = yamlFormat4(RunInfo)
+    implicit val summaryFormat = yamlFormat17(Summary)
+    implicit val runInfoFormat = yamlFormat6(RunInfo)
   }
 
   trait Result

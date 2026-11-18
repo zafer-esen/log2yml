@@ -49,13 +49,23 @@ object LogParser extends RegexParsers {
 ////////////////////////////////////////////////////////////////////////////////
 // Benchmark run information
 
+  // cpu usage / mem usage / num processes left behind
+  // and the number of processes left behind by the run and killed
+  def measurementLabel: Parser[String] = "cpu-time" | "max-rss" | "leftovers"
+
   // benchmark run information can contain one of these labels (excluding output)
   def runFieldIdentifier: Parser[String] =
-    "filename" | "expected" | "duration"
+    "filename" | "expected" | "duration" | measurementLabel
 
   // each line can be runFieldIdentifier : ...
   def runFieldLine: Parser[(String, Option[String])] =
-    runFieldIdentifier ~ ":" ~
+    fieldLine(runFieldIdentifier)
+
+  def measurementLine: Parser[(String, Option[String])] =
+    fieldLine(measurementLabel)
+
+  private def fieldLine(label : Parser[String]) : Parser[(String, Option[String])] =
+    label ~ ":" ~
        opt(not((runFieldIdentifier | "output") ~ ":") ~> (literalLine | literalSingleLine))^^
      {s => (s._1._1, s._2)}
 
@@ -71,12 +81,16 @@ object LogParser extends RegexParsers {
 
   // each benchmark run currently has 4 lines (messy, clean up)
   val benchmarkRun: Parser[RunInfo] =
-    runFieldLine ~ opt(runFieldLine) ~ runOutputField ~ runFieldLine  ^^ {
-      case name ~ maybeExpected ~ output ~ duration =>
+    runFieldLine ~ opt(runFieldLine) ~ runOutputField ~ rep(measurementLine) ~
+    runFieldLine  ^^ {
+      case name ~ maybeExpected ~ output ~ measurements ~ duration =>
+        val measured = measurements.toMap
         RunInfo(name._2.getOrElse(""),
                 maybeExpected.getOrElse(("",Some("")))._2.getOrElse(""),
                 output._2,
-                duration._2.getOrElse(""))
+                duration._2.getOrElse(""),
+                measured.get("cpu-time").flatten,
+                measured.get("max-rss").flatten)
     }
 
   val benchmarkRuns : Parser[Seq[RunInfo]] = benchmarkRun.+
@@ -87,7 +101,8 @@ object LogParser extends RegexParsers {
   val overviewFieldLabel: Parser[String] =
     "tool-name" | "tool-version" | "tool-options" | "cpu-time-limit" |
       "wall-time-limit"  | "os" | "cpu-model" | "cpu-count" | "architecture" |
-    "mem-total" | "start-date" | "script-dir" | "notes"
+    "mem-total" | "start-date" | "script-dir" | "notes" | "hostname" |
+    "slurm-job-id" | "slurm-array-task-id" | "mem-limit"
 
   def overviewField : Parser[(String, String)] =
     overviewFieldLabel ~ ":" ~ overviewFieldValue ^^ {
@@ -110,6 +125,10 @@ object LogParser extends RegexParsers {
       var startDate     : String = ""
       var scriptDir     : String = ""
       var notes         : String = ""
+      var hostname         : Option[String] = None
+      var slurmJobId       : Option[String] = None
+      var slurmArrayTaskId : Option[String] = None
+      var memLimit         : Option[String] = None
 
       for ((label, value) <- fields) {
         label match {
@@ -126,11 +145,16 @@ object LogParser extends RegexParsers {
           case "start-date"       => startDate = value
           case "script-dir"       => scriptDir = value
           case "notes"            => notes = value
+          case "hostname"            => hostname = Some(value)
+          case "slurm-job-id"        => slurmJobId = Some(value)
+          case "slurm-array-task-id" => slurmArrayTaskId = Some(value)
+          case "mem-limit"           => memLimit = Some(value)
           case _ => throw new Exception("Unknown field: " + label)
         }
       }
       Summary(toolName,toolVersion,toolOptions,cpuTimeLimit,wallTimeLimit,os,
-        cpuModel,cpuCount,architecture,memTotal,startDate,scriptDir,notes)
+        cpuModel,cpuCount,architecture,memTotal,startDate,scriptDir,notes,
+        hostname,slurmJobId,slurmArrayTaskId,memLimit)
   }
 
 ////////////////////////////////////////////////////////////////////////////////
