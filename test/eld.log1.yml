@@ -1,5 +1,5 @@
 - toolOptions: -abstract:off -t:10
-  scriptDir: /home/zafer/research/tools/benchmarking/run-list/test
+  scriptDir: /home/user/run-list/test
   os: Linux
   cpuCount: '8'
   architecture: x86_64

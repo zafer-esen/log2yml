@@ -9,7 +9,7 @@ cpu-count       : 8
 architecture    : x86_64
 mem-total       : 16198516 kB
 start-date      : 2022-06-01 11:48:55
-script-dir      : /home/zafer/research/tools/benchmarking/run-list/test
+script-dir      : /home/user/run-list/test
 notes           : 
 
 filename : nonHeapBms220521/ps2-ll.c.smt2
