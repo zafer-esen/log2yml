@@ -132,23 +132,42 @@ object Main extends App {
       }
       val logFiles = dir.listFiles().filter(_.getName.endsWith(".log1"))
       var lastSummary : Benchmarks.Summary = null
+      // unparsable files, e.g. of cancelled tasks, are skipped
+      val skipped = new scala.collection.mutable.ArrayBuffer[String]
       val aggregatedResults = logFiles.flatMap{file =>
         val lines = Source.fromFile(file).getLines()
-        val (summary, bmRuns) =
+        val parsed =
           try {
-            if (svInput)
-              parser.SVParser(file.getName, lines)
-            else
-              parser.LogParser(lines.mkString("\n"))
+            Some(if (svInput)
+                   parser.SVParser(file.getName, lines)
+                 else
+                   parser.LogParser(lines.mkString("\n")))
           } catch {
             case e : Throwable =>
-              println("Error parsing file: " + file.getAbsolutePath)
-              throw e
+              if (skipped.length < 5)
+                println("WARNING: skipping unparsable log file " +
+                        file.getAbsolutePath + ": " + e.getMessage)
+              skipped += file.getName
+              None
           }
-        lastSummary = summary
-        // todo: do some checks here regarding summary
-        bmRuns
+        parsed match {
+          case Some((summary, bmRuns)) =>
+            lastSummary = summary
+            // todo: do some checks here regarding summary
+            bmRuns
+          case None => Seq()
+        }
       }
+      if (lastSummary == null) {
+        println("No log file in " + inPath + " could be parsed (" +
+                logFiles.length + " file(s) tried).")
+        return
+      }
+      if (skipped.nonEmpty)
+        println("WARNING: " + skipped.length + " of " + logFiles.length +
+                " log file(s) were skipped: " +
+                skipped.take(5).mkString(", ") +
+                (if (skipped.length > 5) ", ..." else ""))
       println(aggregatedResults.length + " benchmark runs found for the tool " +
               lastSummary.toolName + ".")
       // Process and output aggregated results for all files

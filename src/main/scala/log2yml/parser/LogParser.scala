@@ -150,11 +150,31 @@ object LogParser extends RegexParsers {
     case s => s.trim
   }
 
+  // the log up to the last complete run, None if no run is complete or
+  // nothing follows the last one
+  private def upToLastCompleteRun(annotation : String) : Option[String] = {
+    val lines = annotation.split("\n", -1)
+    val last  = lines.lastIndexWhere(l => l.trim.startsWith("duration") &&
+                                          l.contains(":"))
+    if (last < 0 || last == lines.length - 1) None
+    else Some(lines.take(last + 1).mkString("\n"))
+  }
+
   def apply (annotation : String) : (Summary, Seq[RunInfo]) = {
     parse(phrase(rep1(parseLogFile)), annotation) match {
-      case NoSuccess(msg, input)  => throw new Exception(
-        msg + " at line " + input.pos.line + " column " + input.pos.column)
       case Success(result, _) => result.head
+      case NoSuccess(msg, input) =>
+        // the log of a cancelled job ends with a cut-off run
+        upToLastCompleteRun(annotation) match {
+          case Some(prefix) =>
+            parse(phrase(rep1(parseLogFile)), prefix) match {
+              case Success(result, _) => result.head
+              case NoSuccess(msg2, input2) => throw new Exception(
+                msg2 + " at line " + input2.pos.line + " column " + input2.pos.column)
+            }
+          case None => throw new Exception(
+            msg + " at line " + input.pos.line + " column " + input.pos.column)
+        }
     }
   }
 }
